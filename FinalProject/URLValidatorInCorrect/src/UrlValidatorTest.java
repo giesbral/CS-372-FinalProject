@@ -212,13 +212,16 @@ public class UrlValidatorTest extends TestCase {
    {
 	   UrlValidator urlVal = new UrlValidator(null, null, UrlValidator.ALLOW_ALL_SCHEMES);
 	   
-	   StringBuffer urlBuffer = new StringBuffer();
-	   boolean expected = true;
+	   
+	  
 	   
 	   collector.addError(new Throwable("The actual is not equal to expected"));
 	   
 	   for (int i = 0; i < scheme.length; ++i)
-	   {   		   
+	   {   	
+		   StringBuffer urlBuffer = new StringBuffer();
+		   boolean expected = true;
+		   
 		   for (int j = 0; j < authority.length; ++j)
 		   {
 			   for (int k = 0; k < path.length; ++k)
@@ -239,10 +242,12 @@ public class UrlValidatorTest extends TestCase {
 				   							
 				   collector.checkThat(actual, CoreMatchers.equalTo(expected));
 				   
-//				   if (assertTrue(expected, actual))
-//				   {
-//					   
-//				   };			   				   
+				   if (assertTrue(expected, actual))
+				   {
+					   System.out.println("PASS: " + urlString + " is a valid URL.");
+				   } else {
+					   System.out.println("FAIL: " + urlString + " is not a valid URL.");
+				   };			   				   
 			   }
 		   }
 	   }   
@@ -281,8 +286,11 @@ public class UrlValidatorTest extends TestCase {
     * @param testObjects Used to create a url.
     */
    
-   ResultPair[] scheme = {new ResultPair("https://", false),
-		   					new ResultPair("http://", true)};
+   ResultPair[] scheme = {	new ResultPair("https://", true),
+		   					new ResultPair("http://", true),
+		   					new ResultPair("dank://", false),
+		   					new ResultPair("ftp://", true),
+		   					};
    
    ResultPair[] authority = {new ResultPair("polygon.com", true)};
    

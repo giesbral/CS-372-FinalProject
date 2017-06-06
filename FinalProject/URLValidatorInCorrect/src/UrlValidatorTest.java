@@ -210,7 +210,7 @@ public class UrlValidatorTest extends TestCase {
    @Test
    public void testYourFirstPartition()
    {
-	   UrlValidator urlVal = new UrlValidator(null, null, UrlValidator.ALLOW_ALL_SCHEMES);
+	   UrlValidator urlVal = new UrlValidator(null, null, UrlValidator.ALLOW_ALL_SCHEMES + UrlValidator.ALLOW_LOCAL_URLS);
 	   int numFailed = 0;
 	   
 //	   collector.addError(new Throwable("The actual is not equal to expected"));
@@ -255,7 +255,7 @@ public class UrlValidatorTest extends TestCase {
 					   
 					   if (!assertEqual(expected, actual)) {
 						   numFailed++;
-						   System.out.println("****FAIL " + numFailed + ": " + urlString + " was validated incorrectly. ---> expected: " + expected + ", actual: " + actual + "*****");
+						   System.out.println("****FAIL " + numFailed + ": \"" + urlString + "\" was validated incorrectly. ---> expected: " + expected + ", actual: " + actual + "*****");
 						   System.out.println("****FAILURE EXPECTATIONS --- SCHEME: " + scheme[i].valid + ", AUTHORITY: " + authority[j].valid + ", PATH: " + path[k].valid + ", QUERY: " + query[a].valid + "*****");
 						   System.out.println("");
 					   };
@@ -316,13 +316,13 @@ public class UrlValidatorTest extends TestCase {
 		   					new ResultPair("http/", false),
 		   					new ResultPair("://", false),
 		   					new ResultPair("/", false),
-		   					new ResultPair(":", false),
-		   					new ResultPair("", false),
+		   					new ResultPair(":", false),		   					
 		   					new ResultPair(" https://", false),
 		   					new ResultPair("\'https://\'", false),
 		   					new ResultPair(".http://", false),
 		   					new ResultPair("-https://", false),
-		   					new ResultPair("~https://", false)
+		   					new ResultPair("~https://", false),
+		   					new ResultPair("", false)
 		   					};
    
    ResultPair[] authority = {	new ResultPair("google.com", true),
@@ -330,18 +330,17 @@ public class UrlValidatorTest extends TestCase {
 		   						new ResultPair("göögle.com", false),
 		   						
 		   						
-		   						new ResultPair("256.255.255.255", false),
-		   						new ResultPair("255.255.255.255", true),
-		   						new ResultPair("255.255.255.0", true),
-		   						new ResultPair("123.456.789.0", false),
-		   						new ResultPair("244.244.244.0", true),
-		   						
+//		   						new ResultPair("256.255.255.255", false),
+//		   						new ResultPair("255.255.255.255", true),
+//		   						new ResultPair("255.255.255.0", true),
+//		   						new ResultPair("123.456.789.0", false),
+//		   						new ResultPair("244.244.244.0", true),
+//		   						
 		   						new ResultPair("localhost", true),
-		   						
+//		   						
 		   						new ResultPair(".com", false),
 		   						new ResultPair(".net", false),
 		   						new ResultPair(".tk", false),
-		   						new ResultPair("", false),
 		   						new ResultPair(" ", false),
 		   						
 		   						new ResultPair ("google.ad", true), 
@@ -649,22 +648,24 @@ public class UrlValidatorTest extends TestCase {
 //		   						new ResultPair ("google.za", true), 
 //		   						new ResultPair ("google.zm", true), 
 //		   						new ResultPair ("google.zw", true),
+		   						
+		   						new ResultPair("", false),
 		   					};
    
    
-   ResultPair[] path = {	new ResultPair("/file", true),
-		   					new ResultPair("/%20", true),
-		   					new ResultPair("/", true),
+   ResultPair[] path = {	//new ResultPair("/file", true),
+		   					//new ResultPair("/%20", true),
+		   					//new ResultPair("/", true),
+		   					//new ResultPair("//file", false),
+		   					//new ResultPair("//", false),		   					
+		   					//new ResultPair("/ /", false),
+		   					new ResultPair("", true),	   					
+		   					};
+   
+   ResultPair[] query = {	//new ResultPair("?key=value", true),
+		   					//new ResultPair("?key1=value&key2=value", true),		   							   					
+		   					//new ResultPair("?key= value &", false),
 		   					new ResultPair("", true),
-		   					new ResultPair("//file", false),
-		   					new ResultPair("//", false),		   					
-		   					new ResultPair("/ /", false),
-		   					
-		   					};
-   
-   ResultPair[] query = {	new ResultPair("?key=value", true),
-		   					new ResultPair("", true)
-		   
    							};
    
    //Object[] urlPartitions = {scheme, authority, path};

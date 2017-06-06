@@ -1,0 +1,79 @@
+Bugs 1:
+Title: IP addresses exceeding 255 are valid in dot-decimal notation.
+
+Description:
+	When validating urls, the url validator returns true for values greater than 255 when IPv4 addresses are written in quad-dotted
+notation (xxxx.xxxx.xxxx.xxxx). Dotted-decimal has a numeric range of 0-255 due to each number representing 8-bits in memory and
+is shown in RFC 790 tables.
+
+
+How it was found:
+Test URL: http://256.256.256.256
+	The bug was identified during manual testing when we tested the url listed above. The test was meant to test the upper-range 
+of dotted-decimal notation and the expected result was false from urlValidator. However, the test returned and continued to return
+true for numbers exceeding 256 as well.
+
+
+Cause of failure:
+Location: Line 91 in InetAddressValidator.java
+	The cause of this bug is the if statement checking if an IP address's numeric value exceeds 255 returns true instead of the expected false
+value for invalid addresses. The location of the return statement is listed above.
+
+-----------------------------------------------------------------------------------------------------------------------------------------------
+Bug 2:
+Title: Some country code top-level domains cause invalid urls
+
+Description:
+	When validating a urls domain, all registered country code top-level domains alphabetically after .it (Italy) return invalid.
+	
+How it was found:
+Example URL: http://www.google.jp
+	The bug was first identified in manual tests when the .jp domain returned false for a url that was expected to be valid, but
+other country domains, such as .ca, returned true. Further testing was performed during partition and unit tests, where all country
+code domains were testing and they showed that all domains alphabetically following .it were returning invalid while those prior returned
+true.
+
+
+Cause of failure:
+Location: COUNTRY_CODE_TLDS array in DomainValidator class (line 248 in DomainValidator.java)
+	The cause of the bug is that the COUNTRY_CODE_TLDS array in DomainValidator is incomplete and only contains entries up to .it
+instead of all registered country domains. Therefore, domains not included in the array end up returning false since they are not hard-coded
+as valid domains.
+
+-----------------------------------------------------------------------------------------------------------------------------------------------
+Bug 3:
+Title: Only validates ports three digits long or shorter
+
+Description:
+	When testing ports, urlValidator only validates ports that are in-between 0 and 999, or those that are less than 3 digits in
+length. When the port number is greater than 3 digits long, urlValidator returns false even when a valid port is provided.
+
+How it was found:
+Example URL: http://www.google.com:65535
+	The failure was identified when testing a url with the maximum valid port, 65535, in manual tests ended up returning false. However,
+in order to identify the nature and cause of the bug we ended up using white-box testing and looked at the code to identify how it was
+validating ports. This led to us discovering that the regex expression governing ports was only validating numbers 3 digits long instead
+of up to 5.
+
+Cause of failure:
+Location: Line 158 in UrlValidator.java
+	The bug is caused by the urlValidator's regex expression for ports flags ports longer than 3 digits as invalid instead of accepting ports
+up to 5 digits long. The regex expression can be found at line 158 in UrlValidator.java.
+
+ -----------------------------------------------------------------------------------------------------------------------------------------------
+ Bug 4:
+ Title: Urls containing queries are always invalid
+ 
+ Description:
+	Whenever a url contains a query, which identified as beginning with a '?', the url always returns invalid even if the query is valid and all other
+url components are valid.
+
+How it was found:
+Example URL: http://www.google.com/path?key=value
+	The bug was first identified in manual testing when all urls containing with queries ended up failing. The bug then continued to show for all partitions
+with valid queries and in unit tests.
+
+Cause of failure:
+Location: Line 446 in UrlValidator.java
+	The cause of the bug is that the member function isValidQuery in the UrlValidator class returns the negative of the query_pattern matches function found at line 446.
+Therefore, when the query matches the provided query pattern, indicating a valid query, the function returns invalid (false) instead of valid (true).

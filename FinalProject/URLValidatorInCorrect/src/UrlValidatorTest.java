@@ -211,11 +211,9 @@ public class UrlValidatorTest extends TestCase {
    public void testYourFirstPartition()
    {
 	   UrlValidator urlVal = new UrlValidator(null, null, UrlValidator.ALLOW_ALL_SCHEMES);
+	   int numFailed = 0;
 	   
-	   
-	  
-	   
-	   collector.addError(new Throwable("The actual is not equal to expected"));
+//	   collector.addError(new Throwable("The actual is not equal to expected"));
 	   
 	   for (int i = 0; i < scheme.length; ++i)
 	   {   	 
@@ -243,21 +241,30 @@ public class UrlValidatorTest extends TestCase {
 					   String urlString = urlBuffer.toString();
 					   boolean actual = urlVal.isValid(urlString);
 					   							
-					   collector.checkThat(actual, CoreMatchers.equalTo(expected));
+					   //collector.checkThat(actual, CoreMatchers.equalTo(expected));
 					   
-					   if (actual == true && assertEqual(expected, actual))
-					   {
-						   System.out.println("PASS: " + urlString + " is a valid URL.");
-					   } else if (actual == false && assertEqual(expected, actual)) {
-						   System.out.println("PASS: " + urlString + " is not a valid URL.");
-					   } else if (!assertEqual(expected, actual)) {
-						   System.out.println("****FAIL: " + urlString + " was validated incorrectly. ---> expected: " + expected + ", actual: " + actual + "*****");
+//					   if (actual == true && assertEqual(expected, actual))
+//					   {
+//						   System.out.println("PASS: " + urlString + " is a valid URL.");
+//					   } else if (actual == false && assertEqual(expected, actual)) {
+//						   System.out.println("PASS: " + urlString + " is not a valid URL.");
+//					   } else if (!assertEqual(expected, actual)) {
+//						   System.out.println("****FAIL: " + urlString + " was validated incorrectly. ---> expected: " + expected + ", actual: " + actual + "*****");
+//						   System.out.println("****FAILURE EXPECTATIONS --- SCHEME: " + scheme[i].valid + ", AUTHORITY: " + authority[j].valid + ", PATH: " + path[k].valid + ", QUERY: " + query[a].valid + "*****");
+//					   };
+					   
+					   if (!assertEqual(expected, actual)) {
+						   numFailed++;
+						   System.out.println("****FAIL " + numFailed + ": " + urlString + " was validated incorrectly. ---> expected: " + expected + ", actual: " + actual + "*****");
 						   System.out.println("****FAILURE EXPECTATIONS --- SCHEME: " + scheme[i].valid + ", AUTHORITY: " + authority[j].valid + ", PATH: " + path[k].valid + ", QUERY: " + query[a].valid + "*****");
+						   System.out.println("");
 					   };
 				   }
 			   }
 		   }
-	   }   
+	   }
+	   
+	   System.out.println("TOTAL FAILED TESTS: " + numFailed);
    }
    
    public void testYourSecondPartition(){
@@ -337,7 +344,7 @@ public class UrlValidatorTest extends TestCase {
 		   						new ResultPair("", false),
 		   						new ResultPair(" ", false),
 		   						
-//		   						new ResultPair ("google.ad", true), 
+		   						new ResultPair ("google.ad", true), 
 //		   						new ResultPair ("google.ae", true), 
 //		   						new ResultPair ("google.af", true), 
 //		   						new ResultPair ("google.ag", true), 
@@ -646,6 +653,13 @@ public class UrlValidatorTest extends TestCase {
    
    
    ResultPair[] path = {	new ResultPair("/file", true),
+		   					new ResultPair("/%20", true),
+		   					new ResultPair("/", true),
+		   					new ResultPair("", true),
+		   					new ResultPair("//file", false),
+		   					new ResultPair("//", false),		   					
+		   					new ResultPair("/ /", false),
+		   					
 		   					};
    
    ResultPair[] query = {	new ResultPair("?key=value", true),
@@ -653,6 +667,6 @@ public class UrlValidatorTest extends TestCase {
 		   
    							};
    
-   Object[] urlPartitions = {scheme, authority, path};
+   //Object[] urlPartitions = {scheme, authority, path};
    
 }

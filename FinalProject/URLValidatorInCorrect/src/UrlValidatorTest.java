@@ -203,7 +203,7 @@ public class UrlValidatorTest extends TestCase {
 //	   
 //	   //test invalid chars?
    }
-   
+    
    @Rule
    public ErrorCollector collector = new ErrorCollector();
    
@@ -218,9 +218,7 @@ public class UrlValidatorTest extends TestCase {
 	   collector.addError(new Throwable("The actual is not equal to expected"));
 	   
 	   for (int i = 0; i < scheme.length; ++i)
-	   {   	
-		   
-		   
+	   {   	 
 		   for (int j = 0; j < authority.length; ++j)
 		   {
 			   for (int k = 0; k < path.length; ++k)
@@ -247,13 +245,14 @@ public class UrlValidatorTest extends TestCase {
 					   							
 					   collector.checkThat(actual, CoreMatchers.equalTo(expected));
 					   
-					   if (actual == true && assertTrue(expected, actual))
+					   if (actual == true && assertEqual(expected, actual))
 					   {
-						   // System.out.println("PASS: " + urlString + " is a valid URL.");
-					   } else if (actual == false && assertTrue(expected, actual)) {
-						   // System.out.println("PASS: " + urlString + " is not a valid URL.");
-					   } else if (!assertTrue(expected, actual)) {
-						   System.out.println("FAIL: " + urlString + " was validated incorrectly.");
+						   System.out.println("PASS: " + urlString + " is a valid URL.");
+					   } else if (actual == false && assertEqual(expected, actual)) {
+						   System.out.println("PASS: " + urlString + " is not a valid URL.");
+					   } else if (!assertEqual(expected, actual)) {
+						   System.out.println("****FAIL: " + urlString + " was validated incorrectly. ---> expected: " + expected + ", actual: " + actual + "*****");
+						   System.out.println("****FAILURE EXPECTATIONS --- SCHEME: " + scheme[i].valid + ", AUTHORITY: " + authority[j].valid + ", PATH: " + path[k].valid + ", QUERY: " + query[a].valid + "*****");
 					   };
 				   }
 			   }
@@ -276,7 +275,7 @@ public class UrlValidatorTest extends TestCase {
 	   
    }
    
-   private boolean assertTrue(boolean expected, boolean actual)
+   private boolean assertEqual(boolean expected, boolean actual)
    {
 	   if (expected == actual)
 	   {

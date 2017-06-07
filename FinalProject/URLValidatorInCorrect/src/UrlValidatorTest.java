@@ -272,10 +272,10 @@ public class UrlValidatorTest extends TestCase {
    }
    
    
-   public void testIsValid()
-   {
-	   System.out.println(scheme.length);
-   }
+//   public void testIsValid()
+//   {
+//	   System.out.println(scheme.length);
+//   }
    
    public void testAnyOtherUnitTest()
    {
@@ -325,24 +325,39 @@ public class UrlValidatorTest extends TestCase {
 		   					new ResultPair("", false)
 		   					};
    
-   ResultPair[] authority = {	new ResultPair("google.com", true),
+   ResultPair[] authority = {	// Testing standard hostnames
+		   						new ResultPair("google.com", true),
 		   						new ResultPair(" google.com", false),
 		   						new ResultPair("göögle.com", false),
 		   						
+		   						// Testing Port Numbers
+		   						new ResultPair("google.com:", false),
+		   						new ResultPair("google.com:-1", false),
+		   						new ResultPair("google.com:1", true),
+		   						new ResultPair("google.com:10", true),
+		   						new ResultPair("google.com:100", true),
+		   						new ResultPair("google.com:1000", true),
+		   						new ResultPair("google.com:10000", true),
+		   						new ResultPair("google.com:100000", false),
 		   						
+		   						// Testing IP addresses
 //		   						new ResultPair("256.255.255.255", false),
 //		   						new ResultPair("255.255.255.255", true),
 //		   						new ResultPair("255.255.255.0", true),
 //		   						new ResultPair("123.456.789.0", false),
 //		   						new ResultPair("244.244.244.0", true),
 //		   						
+		   						// Testing Local URLs
 		   						new ResultPair("localhost", true),
-//		   						
+		   						new ResultPair("machine", true),
+	   						
+		   						// Testing URLs with invalid registered names
 		   						new ResultPair(".com", false),
 		   						new ResultPair(".net", false),
 		   						new ResultPair(".tk", false),
 		   						new ResultPair(" ", false),
 		   						
+		   						// Testing Country Codes
 		   						new ResultPair ("google.ad", true), 
 //		   						new ResultPair ("google.ae", true), 
 //		   						new ResultPair ("google.af", true), 

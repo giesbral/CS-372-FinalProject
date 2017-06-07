@@ -45,8 +45,6 @@ public class UrlValidatorTest extends TestCase {
    
    public void testManualTest()
    {
-//	   UrlValidator urlVal = new UrlValidator(null, null, UrlValidator.ALLOW_ALL_SCHEMES);
-//	   System.out.println(urlVal.isValid("http://www.amazon.com"));
 //	   
 //	   //my urls
 //	   System.out.println(urlVal.isValid("http://www.google.com"));
@@ -283,46 +281,52 @@ public class UrlValidatorTest extends TestCase {
 	   {   	 
 		   for (int j = 0; j < authority.length; ++j)
 		   {
-			   for (int k = 0; k < path.length; ++k)
+			   for (int k = 0; k < port.length; ++k)
 			   {
-				   for (int a = 0; a < query.length; ++a) {
-					   
-					   StringBuffer urlBuffer = new StringBuffer();
-					   boolean expected = true;
-					   
-					   urlBuffer.append(scheme[i].item);
-					   expected &= scheme[i].valid;
-							   
-					   urlBuffer.append(authority[j].item);
-					   expected &= authority[j].valid;
-					   
-					   urlBuffer.append(path[k].item);
-					   expected &= path[k].valid;
-					   
-					   urlBuffer.append(query[a].item);
-					   expected &= query[a].valid;
-					   
-					   String urlString = urlBuffer.toString();
-					   boolean actual = urlVal.isValid(urlString);
-					   							
-					   //collector.checkThat(actual, CoreMatchers.equalTo(expected));
-					   
-//					   if (actual == true && assertEqual(expected, actual))
-//					   {
-//						   System.out.println("PASS: " + urlString + " is a valid URL.");
-//					   } else if (actual == false && assertEqual(expected, actual)) {
-//						   System.out.println("PASS: " + urlString + " is not a valid URL.");
-//					   } else if (!assertEqual(expected, actual)) {
-//						   System.out.println("****FAIL: " + urlString + " was validated incorrectly. ---> expected: " + expected + ", actual: " + actual + "*****");
-//						   System.out.println("****FAILURE EXPECTATIONS --- SCHEME: " + scheme[i].valid + ", AUTHORITY: " + authority[j].valid + ", PATH: " + path[k].valid + ", QUERY: " + query[a].valid + "*****");
-//					   };
-					   
-					   if (!assertEqual(expected, actual)) {
-						   numFailed++;
-						   System.out.println("****FAIL " + numFailed + ": \"" + urlString + "\" was validated incorrectly. ---> expected: " + expected + ", actual: " + actual + "*****");
-						   System.out.println("****FAILURE EXPECTATIONS --- SCHEME: " + scheme[i].valid + ", AUTHORITY: " + authority[j].valid + ", PATH: " + path[k].valid + ", QUERY: " + query[a].valid + "*****");
-						   System.out.println("");
-					   };
+				   for (int l = 0; l < path.length; ++l)
+				   {
+					   for (int a = 0; a < query.length; ++a) {
+						   
+						   StringBuffer urlBuffer = new StringBuffer();
+						   boolean expected = true;
+						   
+						   urlBuffer.append(scheme[i].item);
+						   expected &= scheme[i].valid;
+								   
+						   urlBuffer.append(authority[j].item);
+						   expected &= authority[j].valid;
+						   
+						   urlBuffer.append(port[k].item);
+						   expected &= port[k].valid;
+						   
+						   urlBuffer.append(path[l].item);
+						   expected &= path[l].valid;
+						  					   
+						   urlBuffer.append(query[a].item);
+						   expected &= query[a].valid;
+						   
+						   String urlString = urlBuffer.toString();
+						   boolean actual = urlVal.isValid(urlString);
+						   							
+						   //collector.checkThat(actual, CoreMatchers.equalTo(expected));
+						   
+	//					   if (actual == true && assertEqual(expected, actual))
+	//					   {
+	//						   System.out.println("PASS: " + urlString + " is a valid URL.");
+	//					   } else if (actual == false && assertEqual(expected, actual)) {
+	//						   System.out.println("PASS: " + urlString + " is not a valid URL.");
+	//					   } else if (!assertEqual(expected, actual)) {
+	//						   System.out.println("****FAIL: " + urlString + " was validated incorrectly. ---> expected: " + expected + ", actual: " + actual + "*****");
+	//						   System.out.println("****FAILURE EXPECTATIONS --- SCHEME: " + scheme[i].valid + ", AUTHORITY: " + authority[j].valid + ", PATH: " + path[k].valid + ", QUERY: " + query[a].valid + "*****");
+	//					   };
+						   
+						   if (!assertEqual(expected, actual)) {
+							   numFailed++;
+							   System.out.println("****FAIL " + numFailed + ": \"" + urlString + "\" was validated incorrectly. ---> expected: " + expected + ", actual: " + actual + "*****");
+							   System.out.println("****FAILURE EXPECTATIONS --- SCHEME: " + scheme[i].valid + ", AUTHORITY: " + authority[j].valid + ", PORT: " + port[k].valid + ", PATH: " + path[l].valid + ", QUERY: " + query[a].valid + "*****");
+							   System.out.println("");
+						   };
+					   }
 				   }
 			   }
 		   }
@@ -355,46 +359,42 @@ public class UrlValidatorTest extends TestCase {
     */
    
    ResultPair[] scheme = {	new ResultPair("https://", true),
-		   					new ResultPair("http://", true),
-		   					new ResultPair("dank://", true),
-		   					new ResultPair("ftp://", true),
-		   					new ResultPair("aaa://", true),
-		   					new ResultPair("+aaa://", false),
-		   					new ResultPair("attachment://", true),
-		   					new ResultPair("jabber://", true),
-		   					new ResultPair("z39.50s://", true),
-		   					new ResultPair("121321://", false),
-		   					new ResultPair("https:/", false),
-		   					new ResultPair("http:", false),
-		   					new ResultPair("http//", false),
-		   					new ResultPair("http/", false),
-		   					new ResultPair("://", false),
-		   					new ResultPair("/", false),
-		   					new ResultPair(":", false),		   					
-		   					new ResultPair(" https://", false),
-		   					new ResultPair("\'https://\'", false),
-		   					new ResultPair(".http://", false),
-		   					new ResultPair("-https://", false),
-		   					new ResultPair("~https://", false),
-		   					new ResultPair("", false)
+//		   					new ResultPair("http://", true),
+//		   					new ResultPair("dank://", true),
+//		   					new ResultPair("ftp://", true),
+//		   					new ResultPair("aaa://", true),
+//		   					new ResultPair("+aaa://", false),
+//		   					new ResultPair("attachment://", true),
+//		   					new ResultPair("jabber://", true),
+//		   					new ResultPair("z39.50s://", true),
+//		   					new ResultPair("121321://", false),
+//		   					new ResultPair("https:/", false),
+//		   					new ResultPair("http:", false),
+//		   					new ResultPair("http//", false),
+//		   					new ResultPair("http/", false),
+//		   					new ResultPair("://", false),
+//		   					new ResultPair("/", false),
+//		   					new ResultPair(":", false),		   					
+//		   					new ResultPair(" https://", false),
+//		   					new ResultPair("\'https://\'", false),
+//		   					new ResultPair(".http://", false),
+//		   					new ResultPair("-https://", false),
+//		   					new ResultPair("~https://", false),
+//		   					new ResultPair("", false)
 		   					};
    
    ResultPair[] authority = {	// Testing standard hostnames
-		   						new ResultPair("google.com", true),
-		   						new ResultPair(" google.com", false),
-		   						new ResultPair("göögle.com", false),
-		   						
-		   						// Testing Port Numbers
-		   						new ResultPair("google.com:", false),
-		   						new ResultPair("google.com:-1", false),
-		   						new ResultPair("google.com:1", true),
-		   						new ResultPair("google.com:10", true),
-		   						new ResultPair("google.com:100", true),
-		   						new ResultPair("google.com:1000", true),
-		   						new ResultPair("google.com:10000", true),
-		   						new ResultPair("google.com:100000", false),
+//		   						new ResultPair("google.com", true),
+//		   						new ResultPair(" google.com", false),
+//		   						new ResultPair("göögle.com", false),		   							   						
 		   						
 		   						// Testing IP addresses
+//		   						new ResultPair("0.0.0.0", true),
+//		   						new ResultPair("-1.1.1.1", false),
+		   						new ResultPair(".1.1.1.1", false),
+//		   						new ResultPair("1.1.1.1.", false),
+//		   						new ResultPair("1.1.1", false),
+//		   						new ResultPair("1.1.1.1.1", false),
 //		   						new ResultPair("256.255.255.255", false),
 //		   						new ResultPair("255.255.255.255", true),
 //		   						new ResultPair("255.255.255.0", true),
@@ -402,17 +402,15 @@ public class UrlValidatorTest extends TestCase {
 //		   						new ResultPair("244.244.244.0", true),
 //		   						
 		   						// Testing Local URLs
-		   						new ResultPair("localhost", true),
-		   						new ResultPair("machine", true),
+//		   						new ResultPair("localhost", true),
+//		   						new ResultPair("machine", true),
 	   						
 		   						// Testing URLs with invalid registered names
-		   						new ResultPair(".com", false),
-		   						new ResultPair(".net", false),
-		   						new ResultPair(".tk", false),
-		   						new ResultPair(" ", false),
+//		   						new ResultPair(".com", false),
+//		   						new ResultPair(" ", false),
 		   						
 		   						// Testing Country Codes
-		   						new ResultPair ("google.ad", true), 
+//		   						new ResultPair ("google.ad", true), 
 //		   						new ResultPair ("google.ae", true), 
 //		   						new ResultPair ("google.af", true), 
 //		   						new ResultPair ("google.ag", true), 
@@ -720,20 +718,33 @@ public class UrlValidatorTest extends TestCase {
 		   						
 		   						new ResultPair("", false),
 		   					};
-   
+
+   ResultPair[] port = {	//new ResultPair(":", false),
+							//new ResultPair(":-1", false),
+							new ResultPair(":0", true),
+//							new ResultPair(":1", true),
+//							new ResultPair(":10", true),
+//							new ResultPair(":100", true),
+//							new ResultPair(":1000", true),
+//							new ResultPair(":10000", true),
+//							new ResultPair(":100000", false),
+//							new ResultPair(":65535", true),
+//							new ResultPair(":65536", false),
+//							new ResultPair("", true),   
+   							};
    
    ResultPair[] path = {	//new ResultPair("/file", true),
-		   					//new ResultPair("/%20", true),
-		   					//new ResultPair("/", true),
-		   					//new ResultPair("//file", false),
-		   					//new ResultPair("//", false),		   					
-		   					//new ResultPair("/ /", false),
+//		   					new ResultPair("/%20", true),
+//		   					new ResultPair("/", true),
+//		   					new ResultPair("//file", false),
+//		   					new ResultPair("//", false),		   					
+//		   					new ResultPair("/ /", false),
 		   					new ResultPair("", true),	   					
 		   					};
    
    ResultPair[] query = {	//new ResultPair("?key=value", true),
-		   					//new ResultPair("?key1=value&key2=value", true),		   							   					
-		   					//new ResultPair("?key= value &", false),
+//		   					new ResultPair("?key1=value&key2=value", true),		   							   					
+//		   					new ResultPair("?key= value &", false),
 		   					new ResultPair("", true),
    							};
    

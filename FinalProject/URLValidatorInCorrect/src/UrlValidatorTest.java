@@ -735,6 +735,7 @@ public class UrlValidatorTest extends TestCase {
    
    ResultPair[] path = {	//new ResultPair("/file", true),
 //		   					new ResultPair("/%20", true),
+//		   					new ResultPair("/file1/file2", true),
 //		   					new ResultPair("/", true),
 //		   					new ResultPair("//file", false),
 //		   					new ResultPair("//", false),		   					

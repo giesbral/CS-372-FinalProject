@@ -1,5 +1,6 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
+
  * contributor license agreements.  See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
@@ -15,6 +16,18 @@
  * limitations under the License.
  */
 
+// 
+
+/* 
+ 	CS362_400_S2017
+ 	Final Project - Part B
+ 	6/11/2017
+ 
+ 	Group Members:
+ 		* Alex Giesbrecht - giesbral@oregonstate.edu
+ 		* Michael Sterrir - sterritm@oregonstate.edu
+ 		* Ian Stanfield - stanfiei@oregonstate.edu
+*/
 
 import org.junit.Rule;
 import org.junit.Test;
